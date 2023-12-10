@@ -138,8 +138,30 @@ class HabitCardListCache @Inject constructor(
     override fun onCommandFinished(command: Command) {
         if (command is CreateRepetitionCommand) {
             command.habit.id?.let { refreshHabit(it) }
+            sendRewardPoints(command)
         } else {
             refreshAllHabits()
+        }
+    }
+
+    private fun sendRewardPoints(command: CreateRepetitionCommand) {
+        if (command.value == 2 || command.value == 0) {
+            val rewardValueString = command.habit.name.substringAfterLast(" ")
+
+            var rewardValueInt: Int = try {
+                rewardValueString.toInt()
+            } catch (e: Exception) {
+                1
+            }
+
+            if (command.value == 0) {
+                rewardValueInt *= -1
+            }
+
+            listener.onItemSendReward(
+                rewardValueInt,
+                command.habit.name,
+            )
         }
     }
 
@@ -206,6 +228,7 @@ class HabitCardListCache @Inject constructor(
         fun onItemMoved(oldPosition: Int, newPosition: Int) {}
         fun onItemRemoved(position: Int) {}
         fun onRefreshFinished() {}
+        fun onItemSendReward(rewardValue: Int, taskName: String) {}
     }
 
     private inner class CacheData {

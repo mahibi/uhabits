@@ -18,7 +18,9 @@
  */
 package org.isoron.uhabits.activities.habits.list.views
 
+import android.content.Intent
 import android.view.ViewGroup
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import org.isoron.uhabits.activities.habits.list.MAX_CHECKMARK_COUNT
 import org.isoron.uhabits.core.models.Habit
@@ -33,6 +35,7 @@ import org.isoron.uhabits.core.utils.MidnightTimer
 import org.isoron.uhabits.inject.ActivityScope
 import java.util.LinkedList
 import javax.inject.Inject
+
 
 /**
  * Provides data that backs a [HabitCardListView].
@@ -157,6 +160,16 @@ class HabitCardListAdapter @Inject constructor(
         notifyItemChanged(position)
         observable.notifyListeners()
     }
+
+    override fun onItemSendReward(rewardValue: Int, taskName: String) {
+        Intent().also { intent ->
+            intent.setAction("rewardPointsIntent")
+            intent.putExtra("rewardValue", rewardValue)
+            intent.putExtra("taskName", taskName)
+            listView!!.context.sendBroadcast(intent)
+        }
+    }
+
 
     override fun onItemInserted(position: Int) {
         notifyItemInserted(position)

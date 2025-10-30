@@ -20,7 +20,8 @@ package org.isoron.uhabits.activities.habits.list.views
 
 import android.content.Intent
 import android.view.ViewGroup
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import org.isoron.uhabits.activities.habits.list.MAX_CHECKMARK_COUNT
 import org.isoron.uhabits.core.models.Habit
@@ -169,6 +170,8 @@ class HabitCardListAdapter @Inject constructor(
             intent.setPackage("com.minimo.launcher")
             listView!!.context.sendBroadcast(intent)
         }
+
+        Toast.makeText(listView!!.context, rewardValue.toString(), Toast.LENGTH_SHORT).show()
     }
 
 

@@ -166,6 +166,7 @@ class HabitCardListAdapter @Inject constructor(
             intent.setAction("rewardPointsIntent")
             intent.putExtra("rewardValue", rewardValue)
             intent.putExtra("taskName", taskName)
+            intent.setPackage("com.minimo.launcher")
             listView!!.context.sendBroadcast(intent)
         }
     }
